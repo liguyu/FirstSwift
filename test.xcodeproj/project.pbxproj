@@ -19,6 +19,9 @@
 		1862735B20BBF46E007234CB /* testUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862735A20BBF46E007234CB /* testUITests.swift */; };
 		1878311B20C5111B00AC1407 /* GrainSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1878311A20C5111B00AC1407 /* GrainSpinner.swift */; };
 		1878311F20C5420B00AC1407 /* FileDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1878311E20C5420B00AC1407 /* FileDownloader.swift */; };
+		18AB680620D244DE009DB2C4 /* HttpDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AB680520D244DE009DB2C4 /* HttpDelegate.swift */; };
+		18AB680820D245F7009DB2C4 /* JSBridgeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AB680720D245F7009DB2C4 /* JSBridgeDelegate.swift */; };
+		18AB680A20D25048009DB2C4 /* HostApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AB680920D25048009DB2C4 /* HostApp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +60,9 @@
 		1862735C20BBF46E007234CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1878311A20C5111B00AC1407 /* GrainSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrainSpinner.swift; sourceTree = "<group>"; };
 		1878311E20C5420B00AC1407 /* FileDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloader.swift; sourceTree = "<group>"; };
+		18AB680520D244DE009DB2C4 /* HttpDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpDelegate.swift; sourceTree = "<group>"; };
+		18AB680720D245F7009DB2C4 /* JSBridgeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSBridgeDelegate.swift; sourceTree = "<group>"; };
+		18AB680920D25048009DB2C4 /* HostApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +93,9 @@
 		1862732E20BBF46C007234CB = {
 			isa = PBXGroup;
 			children = (
+				18AB680720D245F7009DB2C4 /* JSBridgeDelegate.swift */,
+				18AB680920D25048009DB2C4 /* HostApp.swift */,
+				18AB680520D244DE009DB2C4 /* HttpDelegate.swift */,
 				1878311E20C5420B00AC1407 /* FileDownloader.swift */,
 				1878311A20C5111B00AC1407 /* GrainSpinner.swift */,
 				180513AE20C1492B00FB7083 /* ProgressView.swift */,
@@ -278,6 +287,9 @@
 				180513AD20C1252200FB7083 /* DownloadButton.swift in Sources */,
 				1878311B20C5111B00AC1407 /* GrainSpinner.swift in Sources */,
 				1862733B20BBF46C007234CB /* AppDelegate.swift in Sources */,
+				18AB680820D245F7009DB2C4 /* JSBridgeDelegate.swift in Sources */,
+				18AB680A20D25048009DB2C4 /* HostApp.swift in Sources */,
+				18AB680620D244DE009DB2C4 /* HttpDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

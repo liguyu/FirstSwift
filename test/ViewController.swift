@@ -20,22 +20,25 @@ extension wkScriptMessageHandler {
             let className = dict["clazz"] as! String
             let functionName = dict["func"] as! String
             let package = Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String
-            if let cls = NSClassFromString(package + "." + "Callme") as? NSObject.Type{
-                var dict = Dictionary<String, Any?>()
-                dict["asd"] = 1
-                dict["def"] = "1"
+            if let cls = NSClassFromString(package + "." + className) as? NSObject.Type{
                 let obj = cls.init()
-                let functionSelector = Selector("log2:")
-                print(obj.responds(to: #selector(Callme.maybe)))
-                print(obj.responds(to: Selector(("maybe"))))
-                print(obj.responds(to: Selector(("log:"))))
-                print(obj.responds(to: Selector(("log3WithData:"))))
-                print(obj.responds(to: Selector(("log4WithData1:d2:"))))
-                print(obj.responds(to: Selector(("log5:d2:"))))
-                if obj.responds(to: functionSelector) {
-                    let unmanaged = obj.perform(functionSelector, with: dict as NSDictionary)
+                let fs = Selector(functionName + ":")
+                if obj.responds(to: fs) {
+                    let unmanaged = obj.perform(fs, with: dict)
                     let d = unmanaged?.takeUnretainedValue() as! NSDictionary
+                    print("首先调用postMessage")
                     print(d)
+//                let functionSelector = Selector("log2:")
+//                print(obj.responds(to: #selector(Callme.maybe)))
+//                print(obj.responds(to: Selector(("maybe"))))
+//                print(obj.responds(to: Selector(("log:"))))
+//                print(obj.responds(to: Selector(("log3WithData:"))))
+//                print(obj.responds(to: Selector(("log4WithData1:d2:"))))
+//                print(obj.responds(to: Selector(("log5:d2:"))))
+//                if obj.responds(to: functionSelector) {
+//                    let unmanaged = obj.perform(functionSelector, with: dict as NSDictionary)
+//                    let d = unmanaged?.takeUnretainedValue() as! NSDictionary
+//                    print(d)
                 } else {
                     print("方法未找到！")
                 }
@@ -80,8 +83,8 @@ private typealias wkUIDelegate = ViewController
 extension wkUIDelegate {
     func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Swift.Void) {
         print(message);
-        let ac = UIAlertController(title: "Hey, listen!", message: message, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        let ac = UIAlertController(title: "提示信息", message: message, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "确定", style: .default, handler: nil))
         present(ac, animated: true)
         completionHandler()
     }
@@ -104,7 +107,10 @@ extension wkUIDelegate {
     
     func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo,
                  completionHandler: @escaping (String?) -> Void) {
-        completionHandler("the meaning of life is 42")
+        let dict = HttpDelegate.convertToDict(jsonStr: prompt.data(using: String.Encoding.utf8)!)
+        print("调用prompt")
+        print(dict)
+        completionHandler(prompt)
 //        let alertController = UIAlertController(title: nil, message: prompt, preferredStyle: .alert)
 //
 //        alertController.addTextField { (textField) in
@@ -141,50 +147,6 @@ public class WebViewContext {
 }
 
 
-/**
- * since xcode doesnt support enumerating all method names and their corresponding argument list
- * so the class should be self explanatory and provides all method signatures itself
- */
-@objcMembers
-public class HostApp: NSObject {
-    var wvContext: WebViewContext!
-    
-    public func getAnnations() -> [String] {
-        return ["HostApp::alert(String):Void",
-                "HostApp::getAppVersion():Int32",
-                "HostApp::test(String):Void"]
-    }
-    
-    public func alert(msg: String) {
-        
-    }
-
-    public func getAppVersion(msg: String) -> Int32 {
-        return 1
-    }
-    
-    public func test(msg:NSDictionary) -> NSDictionary{
-        print(msg)
-        return msg
-    }
-    
-    public func setWebContext(_ wvContext: WebViewContext) {
-        self.wvContext = wvContext
-    }
-}
-
-class MyHostApp: HostApp {
-    public override func getAnnations() -> [String] {
-        var remarks = super.getAnnations()
-        remarks.append("MyHostApp::echo(json):json")
-        return remarks
-    }
-    
-    public func echo(json: [String: Any]) -> [String: Any] {
-        return json
-    }
-    
-}
 
 class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
     
@@ -198,6 +160,22 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
     var host: String = "http://192.168.20.21:8081/RestWork/rs/"
     var hostApp: MyHostApp!
     
+    @IBAction func nativeCallJs(sender: UIButton) {
+        let urlString = "javascript:toBeInvokedBySwift(1,2,'3')"
+        wk.evaluateJavaScript(urlString) { (result, error) in
+            if result != nil {
+                print(result!)
+            }
+        }
+    }
+    
+    @IBAction func fetchMeta(sender: UIButton) {
+                var dict = Dictionary<String, Any>()
+                dict["a"] = 1
+                dict["b"] = "2"
+                HttpDelegate.syncPost(url: "http://192.168.20.21:8081/RestWork/rs/db/meta2", dict: dict, respondResult: onResultGot2)
+    }
+    
     @IBAction func showMessage(sender: UIButton) {
         //downloadWithProgress()
         //postRequestDownload()
@@ -205,22 +183,21 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
         //getAFile(fn: "c:\\test\\index.html")
         //textLayer.string = String(arc4random_uniform(100) + 1)
         //fetchAllFilesUnderAFolder(url: "http://192.168.20.21:8081/RestWork/rs/dir?path=c:/test")
-        SyncUrlDownload.syncGet(url: "\(host)dir?path=c:/test", respondResult: onH5FileNamesGot)
-//        SyncUrlDownload.syncGet(url: "http://192.168.20.21:8081/RestWork/rs/db/one/from%20t_singlevalue%20where%20name='appVer'", respondResult: onResultGot2)
-//        var dict = Dictionary<String, Any>()
-//        dict["a"] = 1
-//        dict["b"] = "2"
-//        SyncUrlDownload.syncPost(url: "http://192.168.20.21:8081/RestWork/rs/db/meta2", dict: dict, respondResult: onResultGot2)
-//        let ha: HostApp = HostApp()
-//        class_getName()
+        HttpDelegate.syncGet(url: "\(host)dir?path=c:/test", respondResult: onH5FileNamesGot)
+//        HttpDelegate.syncGet(url: "http://192.168.20.21:8081/RestWork/rs/db/one/from%20t_singlevalue%20where%20name='appVer'", respondResult: onResultGot2)
     }
     
     func injectJS() -> String {
         var js =
         """
         HostApp = window.webkit.messageHandlers.HostApp
-        var person = prompt("Please enter your name", "Harry Potter");
-        window.alert(person)
+        //var person = prompt("Please enter your name", "Harry Potter");
+        //window.alert(person)
+        function toBeInvokedBySwift(a, b, c) {
+            var s = 'a:' + a + ',b:' + b + ',c:' + c
+            window.alert('native2browser: ' + s)
+            return s
+        }
         window.onerror = function(err) {
             console.log("window.onerror: " + err)
         }
@@ -236,7 +213,11 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
         for f in funcs {
             let fparts = f.split(separator: ":")
             let fname = fparts[1].split(separator: "(")
-            js = js + "\nHostApp." + fname[0] + "= function(\(fname[1]){\(body)\nHostApp.postMessage({func: '\(fname[0])', args: args, clazz: '\(fparts[0])'})}"
+            js = js + "\nHostApp.\(fname[0])= function(\(fname[1]){\(body)\n;"
+                + "var json = {func: '\(fname[0])', args: args, clazz: '\(fparts[0])'}; HostApp.postMessage(json); "
+                + "var r = prompt(JSON.stringify(json)); window.alert('browser2native result: ' + r);"
+                + "if('\(fparts[2])' !== 'Void') return r"
+                + "}"
         }
         return js
     }
@@ -278,7 +259,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
                     
                     //
                     // save file
-                    let b = SyncUrlDownload.syncPost(url: "\(host)dir", body: String(pair[0])) {
+                    let b = HttpDelegate.syncPost(url: "\(host)dir", body: String(pair[0])) {
                         (data) -> Bool in
                         if !self.saveFile(fullPath: fnWithNoDiskPrefix, data: data) {
                             return false
@@ -341,7 +322,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
         if data == nil {
             return false
         } else {
-            let dict = SyncUrlDownload.convertToDict(jsonStr: data!)
+            let dict = HttpDelegate.convertToDict(jsonStr: data!)
             print("dict: \(dict)")
             return true
         }
@@ -515,12 +496,13 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
         let conf = WKWebViewConfiguration()
         conf.userContentController.add(self, name: "HostApp")
         self.wk = WKWebView(frame: CGRect(x: 0, y: 200, width: 400, height: 500), configuration: conf)
-        //self.wk.load(URLRequest(url: URL(string: "http://www.qq.com")!))
+        self.wk.load(URLRequest(url: URL(string: "http://www.qq.com")!))
         self.view.addSubview(self.wk)
         self.wk.navigationDelegate = self
         self.wk.uiDelegate = self
         hostApp = MyHostApp()
         hostApp.setWebContext(WebViewContext(webView: self.wk))
+        print(hostApp.classForCoder.description())
         //loadHTML()
         
         //download progress ui
