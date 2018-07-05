@@ -1,8 +1,7 @@
 //
 //  ViewController.swift
-//  test
 //
-//  Created by apple on 2018/5/28.
+//  Created by lgy on 2018/5/28.
 //  Copyright © 2018 apple. All rights reserved.
 //
 
@@ -107,7 +106,7 @@ extension wkUIDelegate {
     
     func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo,
                  completionHandler: @escaping (String?) -> Void) {
-        let dict = HttpDelegate.convertToDict(jsonStr: prompt.data(using: String.Encoding.utf8)!)
+        let dict = Util.convertToDict(jsonStr: prompt.data(using: String.Encoding.utf8)!)
         print("调用prompt")
         print(dict)
         completionHandler(prompt)
@@ -157,23 +156,23 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
     var textLayer: CATextLayer!;
     
     var wk: WKWebView!
-    var host: String = "http://192.168.20.21:8081/RestWork/rs/"
+    var host: String!
     var hostApp: MyHostApp!
+    var bridge: JSBridgeDelegate!
     
     @IBAction func nativeCallJs(sender: UIButton) {
-        let urlString = "javascript:toBeInvokedBySwift(1,2,'3')"
-        wk.evaluateJavaScript(urlString) { (result, error) in
-            if result != nil {
-                print(result!)
-            }
-        }
+        bridge.callJs(script: "toBeInvokedBySwift(1,2,'3')")
+//        let urlString = "javascript:toBeInvokedBySwift(1,2,'3')"
+//        wk.evaluateJavaScript(urlString) { (result, error) in
+//            if result != nil {
+//                print(result!)
+//            }
+//        }
     }
     
     @IBAction func fetchMeta(sender: UIButton) {
-                var dict = Dictionary<String, Any>()
-                dict["a"] = 1
-                dict["b"] = "2"
-                HttpDelegate.syncPost(url: "http://192.168.20.21:8081/RestWork/rs/db/meta2", dict: dict, respondResult: onResultGot2)
+        let dd = SyncDBDelegate(dbName: "sqlite.db")
+        let _ = dd.sync(url: "\(host!)db/meta2")
     }
     
     @IBAction func showMessage(sender: UIButton) {
@@ -182,9 +181,23 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
         //getAllFilesUnderAFolder(dir: "c:/test")
         //getAFile(fn: "c:\\test\\index.html")
         //textLayer.string = String(arc4random_uniform(100) + 1)
-        //fetchAllFilesUnderAFolder(url: "http://192.168.20.21:8081/RestWork/rs/dir?path=c:/test")
-        HttpDelegate.syncGet(url: "\(host)dir?path=c:/test", respondResult: onH5FileNamesGot)
-//        HttpDelegate.syncGet(url: "http://192.168.20.21:8081/RestWork/rs/db/one/from%20t_singlevalue%20where%20name='appVer'", respondResult: onResultGot2)
+        //fetchAllFilesUnderAFolder(url: "\(host)dir?path=c:/test")
+        let pd = PagesDownloader(restUrl: "\(host!)")
+        var prefix = Config.get(key: "REMOTE_WWW_PREFIX") as! String
+        pd.setPrefix(prefix: prefix, newPrefix: "www/")
+        pd.downloadWebSite(url: "\(host!)dir?path=\(prefix)")
+        prefix = Config.get(key: "REMOTE_BZ_PREFIX") as! String
+        pd.setPrefix(prefix: prefix, newPrefix: "bz/")
+        pd.downloadWebSite(url: "\(host!)dir?path=\(prefix)")
+        pd.populateBz()
+//        HttpDelegate.syncGet(url: "\(host!)dir?path=c:/test", respondResult: onH5FileNamesGot)
+        if hostApp == nil {
+            hostApp = MyHostApp()
+            bridge = JSBridgeDelegate(wk: self.wk, hostApp: hostApp)
+            hostApp.setBridge(bridge: bridge)
+        }
+        bridge.loadPage(htmlUrlStr: "www/index.html", baseUrlStr: "www")
+//        HttpDelegate.syncGet(url: "\(host)db/one/from%20t_singlevalue%20where%20name='appVer'", respondResult: onResultGot2)
     }
     
     func injectJS() -> String {
@@ -209,14 +222,14 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
                 args['a'+ i] = arguments[i]
             }
         """
-        let funcs = hostApp.getAnnations()
+        let funcs = hostApp.getJSSignatures()
         for f in funcs {
             let fparts = f.split(separator: ":")
             let fname = fparts[1].split(separator: "(")
             js = js + "\nHostApp.\(fname[0])= function(\(fname[1]){\(body)\n;"
                 + "var json = {func: '\(fname[0])', args: args, clazz: '\(fparts[0])'}; HostApp.postMessage(json); "
                 + "var r = prompt(JSON.stringify(json)); window.alert('browser2native result: ' + r);"
-                + "if('\(fparts[2])' !== 'Void') return r"
+                + "if('\(fparts[2])' !== 'void') return r"
                 + "}"
         }
         return js
@@ -322,7 +335,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
         if data == nil {
             return false
         } else {
-            let dict = HttpDelegate.convertToDict(jsonStr: data!)
+            let dict = Util.convertToDict(jsonStr: data!)
             print("dict: \(dict)")
             return true
         }
@@ -418,7 +431,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
     }
     
     func getAllFilesUnderAFolder(dir: String) {
-        let downloader = FileDownloader(url: "http://192.168.20.21:8081/RestWork/rs/dir?path=\(dir)")
+        let downloader = FileDownloader(url: "\(host)dir?path=\(dir)")
         downloader.sendGetRequest {
             data, error in
             if data != nil {
@@ -432,7 +445,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
     }
     
     func getAFile(fn: String) {
-        let downloader = FileDownloader(url: "http://192.168.20.21:8081/RestWork/rs/dir")
+        let downloader = FileDownloader(url: "\(host)dir")
         downloader.sendPostRequest (body:fn) {
             data, error in
             if data != nil {
@@ -498,11 +511,16 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
         self.wk = WKWebView(frame: CGRect(x: 0, y: 200, width: 400, height: 500), configuration: conf)
         self.wk.load(URLRequest(url: URL(string: "http://www.qq.com")!))
         self.view.addSubview(self.wk)
-        self.wk.navigationDelegate = self
-        self.wk.uiDelegate = self
-        hostApp = MyHostApp()
-        hostApp.setWebContext(WebViewContext(webView: self.wk))
-        print(hostApp.classForCoder.description())
+        URLCache.shared.removeAllCachedResponses()
+        URLCache.shared.diskCapacity = 0
+        URLCache.shared.memoryCapacity = 0
+        Config.initConfig()
+        self.host = Config.get(key: "base_url") as! String
+//        self.wk.navigationDelegate = self
+//        self.wk.uiDelegate = self
+//        hostApp = MyHostApp()
+//        hostApp.setWebContext(WebViewContext(webView: self.wk))
+//        print(hostApp.classForCoder.description())
         //loadHTML()
         
         //download progress ui
@@ -510,7 +528,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
     }
     
     func downloadTest() {
-        let downloader = FileDownloader(url: "http://192.168.20.21:8081/RestWork/rs/db/one/from%20t_singlevalue%20where%20name='appVer'")
+        let downloader = FileDownloader(url: "\(host)db/one/from%20t_singlevalue%20where%20name='appVer'")
         downloader.sendGetRequest {
             data, error in
             if data != nil {
@@ -524,12 +542,12 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
     }
     
     func downloadWithProgress() {
-        let downloader = FileDownloader(url: "http://192.168.20.21:8081/RestWork/rs/db/one/from%20t_singlevalue%20where%20name='appVer'")
+        let downloader = FileDownloader(url: "\(host)db/one/from%20t_singlevalue%20where%20name='appVer'")
         downloader.httpGet()
     }
 
     func postRequestDownload() {
-        let downloader = FileDownloader(url: "http://192.168.20.21:8081/RestWork/rs/db/meta2")
+        let downloader = FileDownloader(url: "\(host)db/meta2")
         var dict = Dictionary<String, Any>()
         dict["a"] = 1
         dict["b"] = "2"
@@ -594,32 +612,4 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
     }
 }
 
-@objcMembers
-class Callme: NSObject {
-    func maybe() {
-        print("反射成功！")
-    }
 
-    func log(_ data: String) {
-        NSLog(data)
-    }
-    
-    func log2(_ data: NSDictionary) ->NSDictionary {
-        NSLog("log2 is invoked")
-        print(data)
-        return data
-    }
-
-    func log3(data: String) {
-        NSLog(data)
-    }
-
-    func log4(data1: String, d2 data2: String) {
-        NSLog(data1 + data2)
-    }
-    
-    func log5(_ data1: String, d2 data2: String) {
-        NSLog(data1 + data2)
-    }
-
-}

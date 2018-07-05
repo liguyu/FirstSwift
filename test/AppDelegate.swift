@@ -1,8 +1,7 @@
 //
 //  AppDelegate.swift
-//  test
 //
-//  Created by apple on 2018/5/28.
+//  Created by lgy on 2018/5/28.
 //  Copyright © 2018 apple. All rights reserved.
 //
 

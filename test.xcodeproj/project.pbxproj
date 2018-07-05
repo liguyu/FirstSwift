@@ -10,6 +10,13 @@
 		180513AD20C1252200FB7083 /* DownloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180513AC20C1252200FB7083 /* DownloadButton.swift */; };
 		180513AF20C1492B00FB7083 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180513AE20C1492B00FB7083 /* ProgressView.swift */; };
 		1817468F20BE86A3004F5C19 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 1817468E20BE86A3004F5C19 /* assets */; };
+		183F2B0020DA00D6000879B1 /* DBMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183F2AFF20DA00D6000879B1 /* DBMeta.swift */; };
+		183F2B0220DA3F47000879B1 /* RuntimeException.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183F2B0120DA3F47000879B1 /* RuntimeException.swift */; };
+		1848D72A20D364C500044982 /* SyncDBDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1848D72920D364C500044982 /* SyncDBDelegate.swift */; };
+		185FF10220D8959700F576C5 /* App.config in Resources */ = {isa = PBXBuildFile; fileRef = 185FF10120D8959700F576C5 /* App.config */; };
+		185FF10820D89AB300F576C5 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185FF10720D89AB300F576C5 /* Config.swift */; };
+		185FF10A20D8AF3100F576C5 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185FF10920D8AF3100F576C5 /* Util.swift */; };
+		185FF10C20D920C900F576C5 /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185FF10B20D920C900F576C5 /* DBManager.swift */; };
 		1862733B20BBF46C007234CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862733A20BBF46C007234CB /* AppDelegate.swift */; };
 		1862733D20BBF46C007234CB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862733C20BBF46C007234CB /* ViewController.swift */; };
 		1862734020BBF46C007234CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1862733E20BBF46C007234CB /* Main.storyboard */; };
@@ -22,6 +29,8 @@
 		18AB680620D244DE009DB2C4 /* HttpDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AB680520D244DE009DB2C4 /* HttpDelegate.swift */; };
 		18AB680820D245F7009DB2C4 /* JSBridgeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AB680720D245F7009DB2C4 /* JSBridgeDelegate.swift */; };
 		18AB680A20D25048009DB2C4 /* HostApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AB680920D25048009DB2C4 /* HostApp.swift */; };
+		18AB680C20D282C8009DB2C4 /* PagesDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AB680B20D282C8009DB2C4 /* PagesDownloader.swift */; };
+		18ABDC3F20D3A8AA00AF911F /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18ABDC3A20D39F0A00AF911F /* SQLite.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +54,13 @@
 		180513AC20C1252200FB7083 /* DownloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadButton.swift; sourceTree = "<group>"; };
 		180513AE20C1492B00FB7083 /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		1817468E20BE86A3004F5C19 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
+		183F2AFF20DA00D6000879B1 /* DBMeta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBMeta.swift; sourceTree = "<group>"; };
+		183F2B0120DA3F47000879B1 /* RuntimeException.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuntimeException.swift; sourceTree = "<group>"; };
+		1848D72920D364C500044982 /* SyncDBDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncDBDelegate.swift; sourceTree = "<group>"; };
+		185FF10120D8959700F576C5 /* App.config */ = {isa = PBXFileReference; lastKnownFileType = text; path = App.config; sourceTree = "<group>"; };
+		185FF10720D89AB300F576C5 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		185FF10920D8AF3100F576C5 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		185FF10B20D920C900F576C5 /* DBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBManager.swift; sourceTree = "<group>"; };
 		1862733720BBF46C007234CB /* test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1862733A20BBF46C007234CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1862733C20BBF46C007234CB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -63,6 +79,9 @@
 		18AB680520D244DE009DB2C4 /* HttpDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpDelegate.swift; sourceTree = "<group>"; };
 		18AB680720D245F7009DB2C4 /* JSBridgeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSBridgeDelegate.swift; sourceTree = "<group>"; };
 		18AB680920D25048009DB2C4 /* HostApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostApp.swift; sourceTree = "<group>"; };
+		18AB680B20D282C8009DB2C4 /* PagesDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagesDownloader.swift; sourceTree = "<group>"; };
+		18ABDC3A20D39F0A00AF911F /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = /Users/apple/Documents/asd/test/Carthage/Build/iOS/SQLite.framework; sourceTree = "<absolute>"; };
+		18ABDC3D20D3A88100AF911F /* SQLite.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = SQLite.framework.dSYM; path = Carthage/Build/iOS/SQLite.framework.dSYM; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18ABDC3F20D3A8AA00AF911F /* SQLite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,12 +110,47 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1862732E20BBF46C007234CB = {
+		183F2AFC20D9FFC4000879B1 /* db */ = {
+			isa = PBXGroup;
+			children = (
+				185FF10B20D920C900F576C5 /* DBManager.swift */,
+				183F2AFF20DA00D6000879B1 /* DBMeta.swift */,
+			);
+			path = db;
+			sourceTree = "<group>";
+		};
+		183F2AFD20DA0000000879B1 /* webview */ = {
 			isa = PBXGroup;
 			children = (
 				18AB680720D245F7009DB2C4 /* JSBridgeDelegate.swift */,
 				18AB680920D25048009DB2C4 /* HostApp.swift */,
+			);
+			path = webview;
+			sourceTree = "<group>";
+		};
+		183F2AFE20DA003E000879B1 /* sync */ = {
+			isa = PBXGroup;
+			children = (
+				1848D72920D364C500044982 /* SyncDBDelegate.swift */,
+				18AB680B20D282C8009DB2C4 /* PagesDownloader.swift */,
+			);
+			path = sync;
+			sourceTree = "<group>";
+		};
+		185FF10420D8996B00F576C5 /* util */ = {
+			isa = PBXGroup;
+			children = (
 				18AB680520D244DE009DB2C4 /* HttpDelegate.swift */,
+				185FF10720D89AB300F576C5 /* Config.swift */,
+				185FF10920D8AF3100F576C5 /* Util.swift */,
+				183F2B0120DA3F47000879B1 /* RuntimeException.swift */,
+			);
+			path = util;
+			sourceTree = "<group>";
+		};
+		1862732E20BBF46C007234CB = {
+			isa = PBXGroup;
+			children = (
 				1878311E20C5420B00AC1407 /* FileDownloader.swift */,
 				1878311A20C5111B00AC1407 /* GrainSpinner.swift */,
 				180513AE20C1492B00FB7083 /* ProgressView.swift */,
@@ -104,6 +159,7 @@
 				1862734E20BBF46E007234CB /* testTests */,
 				1862735920BBF46E007234CB /* testUITests */,
 				1862733820BBF46C007234CB /* Products */,
+				18ABDC3920D39F0A00AF911F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -120,6 +176,10 @@
 		1862733920BBF46C007234CB /* test */ = {
 			isa = PBXGroup;
 			children = (
+				183F2AFE20DA003E000879B1 /* sync */,
+				183F2AFD20DA0000000879B1 /* webview */,
+				183F2AFC20D9FFC4000879B1 /* db */,
+				185FF10420D8996B00F576C5 /* util */,
 				1817468E20BE86A3004F5C19 /* assets */,
 				1862733A20BBF46C007234CB /* AppDelegate.swift */,
 				1862733C20BBF46C007234CB /* ViewController.swift */,
@@ -127,6 +187,7 @@
 				1862734120BBF46E007234CB /* Assets.xcassets */,
 				1862734320BBF46E007234CB /* LaunchScreen.storyboard */,
 				1862734620BBF46E007234CB /* Info.plist */,
+				185FF10120D8959700F576C5 /* App.config */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -149,6 +210,15 @@
 			path = testUITests;
 			sourceTree = "<group>";
 		};
+		18ABDC3920D39F0A00AF911F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				18ABDC3D20D3A88100AF911F /* SQLite.framework.dSYM */,
+				18ABDC3A20D39F0A00AF911F /* SQLite.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -159,6 +229,7 @@
 				1862733320BBF46C007234CB /* Sources */,
 				1862733420BBF46C007234CB /* Frameworks */,
 				1862733520BBF46C007234CB /* Resources */,
+				18ABDC4020D3A8C200AF911F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -257,6 +328,7 @@
 				1817468F20BE86A3004F5C19 /* assets in Resources */,
 				1862734220BBF46E007234CB /* Assets.xcassets in Resources */,
 				1862734020BBF46C007234CB /* Main.storyboard in Resources */,
+				185FF10220D8959700F576C5 /* App.config in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,20 +348,44 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		18ABDC4020D3A8C200AF911F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/SQLite.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1862733320BBF46C007234CB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				183F2B0020DA00D6000879B1 /* DBMeta.swift in Sources */,
 				1878311F20C5420B00AC1407 /* FileDownloader.swift in Sources */,
 				1862733D20BBF46C007234CB /* ViewController.swift in Sources */,
 				180513AF20C1492B00FB7083 /* ProgressView.swift in Sources */,
+				183F2B0220DA3F47000879B1 /* RuntimeException.swift in Sources */,
 				180513AD20C1252200FB7083 /* DownloadButton.swift in Sources */,
 				1878311B20C5111B00AC1407 /* GrainSpinner.swift in Sources */,
 				1862733B20BBF46C007234CB /* AppDelegate.swift in Sources */,
+				185FF10820D89AB300F576C5 /* Config.swift in Sources */,
 				18AB680820D245F7009DB2C4 /* JSBridgeDelegate.swift in Sources */,
 				18AB680A20D25048009DB2C4 /* HostApp.swift in Sources */,
 				18AB680620D244DE009DB2C4 /* HttpDelegate.swift in Sources */,
+				18AB680C20D282C8009DB2C4 /* PagesDownloader.swift in Sources */,
+				185FF10A20D8AF3100F576C5 /* Util.swift in Sources */,
+				185FF10C20D920C900F576C5 /* DBManager.swift in Sources */,
+				1848D72A20D364C500044982 /* SyncDBDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -465,6 +561,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FGL3BKU9G5;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = test/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -486,6 +586,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FGL3BKU9G5;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = test/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (

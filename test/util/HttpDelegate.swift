@@ -1,8 +1,7 @@
 //
 //  HttpDelegate.swift
-//  test
 //
-//  Created by apple on 2018/6/14.
+//  Created by lgy on 2018/6/14.
 //  Copyright © 2018 apple. All rights reserved.
 //
 
@@ -79,14 +78,16 @@ class HttpDelegate: NSObject {
         return respondResult(response.data)
     }
     
-    public class func syncPost(url: String, body: String, respondResult: @escaping (Data?) -> (Bool)) -> Bool {
+    public class func syncPost(url: String, body: String?, respondResult: @escaping (Data?) -> (Bool)) -> Bool {
         let aurl = URL(string: url)
         if aurl == nil {
             return false
         }
         var request = URLRequest(url: aurl!)
         request.httpMethod = "POST"
-        request.httpBody = body.data(using: String.Encoding.utf8)
+        if body != nil {
+            request.httpBody = body!.data(using: String.Encoding.utf8)
+        }
         let response = URLSession.shared.synchronousDataTask(urlrequest: request)
         let sc = (response.response as! HTTPURLResponse).statusCode
         if response.error != nil || sc != 200 {
@@ -101,17 +102,5 @@ class HttpDelegate: NSObject {
         return respondResult(response.data)
     }
     
-    public class func convertToDict(jsonStr: Data) -> NSDictionary {
-        do {
-            if let convertedJsonIntoDict = try JSONSerialization.jsonObject(with: jsonStr, options: []) as? NSDictionary {
-                
-                return convertedJsonIntoDict
-                
-            }
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
-        return NSDictionary()
-    }
 }
 
